@@ -6,10 +6,8 @@ template<class T>
 class SmtPtr {
 public:
 	SmtPtr(T *P = NULL): mPointer(P) {
-		std::cout << mPointer << std::endl;
-		RefCount = new int[1];
+		RefCount = new int;
 		*RefCount = 1;
-		std::cout << *RefCount << std::endl;
 	}
 	SmtPtr(const SmtPtr&);
 	SmtPtr& operator=(SmtPtr&);
@@ -28,12 +26,9 @@ private:
 template<class T>
 SmtPtr<T>::SmtPtr(const SmtPtr<T> &smPointer)
 {
-	if (this == &smPointer)
-		return;
-	DecrementRef();
 	mPointer = smPointer.mPointer;
 	RefCount = smPointer.RefCount;
-	*RefCount++;
+	(*RefCount)++;
 }
 template<class T>
 SmtPtr<T>::~SmtPtr()
@@ -48,7 +43,7 @@ SmtPtr<T>& SmtPtr<T>::operator=(SmtPtr<T>& smPointer)
 	DecrementRef();
 	mPointer = smPointer.mPointer;
 	RefCount = smPointer.RefCount;
-	*RefCount++;
+	(*RefCount)++;
 	return *this;
 }
 template<class T>
@@ -60,13 +55,10 @@ T* SmtPtr<T>::operator->()
 template<class T>
 void SmtPtr<T>::DecrementRef()
 {
-	*RefCount--;
+	(*RefCount)--;
 	if (*RefCount == 0) {
-		std::cout << RefCount << std::endl;
 		delete RefCount;
-		std::cout << "3" << std::endl;
 		delete mPointer;
-		std::cout << "4" << std::endl;
 	}
 }
 
