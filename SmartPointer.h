@@ -12,8 +12,10 @@ public:
 	SmtPtr(const SmtPtr&);
 	SmtPtr& operator=(SmtPtr&);
 	~SmtPtr(void);
-	T* operator->(void);
+	T* operator->(void) {return mPointer;}
+	const T* operator->(void) const {return mPointer;}
 	T& operator*(void) {return *mPointer;}
+	const T& operator*(void) const {return *mPointer;}
 	int GetRefCount() {
 		return *RefCount;
 	}
@@ -45,11 +47,6 @@ SmtPtr<T>& SmtPtr<T>::operator=(SmtPtr<T>& smPointer)
 	RefCount = smPointer.RefCount;
 	(*RefCount)++;
 	return *this;
-}
-template<class T>
-T* SmtPtr<T>::operator->()
-{
-	return mPointer;
 }
 
 template<class T>
