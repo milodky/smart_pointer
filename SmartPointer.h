@@ -3,15 +3,15 @@
 #include <cstddef>
 #include <iostream>
 template<class T>
-class SmtPtr {
+class SmartPointer {
 public:
-	SmtPtr(T *P = NULL): mPointer(P) {
+	SmartPointer(T *P = NULL): mPointer(P) {
 		RefCount = new int;
 		*RefCount = 1;
 	}
-	SmtPtr(const SmtPtr&);
-	SmtPtr& operator=(SmtPtr&);
-	~SmtPtr(void);
+	SmartPointer(const SmartPointer&);
+	SmartPointer& operator=(SmartPointer&);
+	~SmartPointer(void);
 	T* operator->(void) {return mPointer;}
 	const T* operator->(void) const {return mPointer;}
 	T& operator*(void) {return *mPointer;}
@@ -26,19 +26,19 @@ private:
 };
 
 template<class T>
-SmtPtr<T>::SmtPtr(const SmtPtr<T> &smPointer)
+SmartPointer<T>::SmartPointer(const SmartPointer<T> &smPointer)
 {
 	mPointer = smPointer.mPointer;
 	RefCount = smPointer.RefCount;
 	(*RefCount)++;
 }
 template<class T>
-SmtPtr<T>::~SmtPtr()
+SmartPointer<T>::~SmartPointer()
 {
 	DecrementRef();
 }
 template<class T>
-SmtPtr<T>& SmtPtr<T>::operator=(SmtPtr<T>& smPointer)
+SmartPointer<T>& SmartPointer<T>::operator=(SmartPointer<T>& smPointer)
 {
 	if (this == &smPointer)
 		return *this;
@@ -50,7 +50,7 @@ SmtPtr<T>& SmtPtr<T>::operator=(SmtPtr<T>& smPointer)
 }
 
 template<class T>
-void SmtPtr<T>::DecrementRef()
+void SmartPointer<T>::DecrementRef()
 {
 	(*RefCount)--;
 	if (*RefCount == 0) {
