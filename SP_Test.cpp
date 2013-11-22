@@ -4,14 +4,26 @@ using namespace std;
 struct people {
 	int height;
 	people(int h = 170) : height(h){}
-	void output(){cout << "height is " << height << endl;}
+	virtual void output(){cout << "height is " << height << endl;}
 };
+struct student : public people
+{
+	int weight;
+	student(int h = 170, int w = 173) : people(h), weight(w){}
+	virtual void output();
+};
+void student::output()
+{
+	cout << "height is " << height << ", weight is " << weight << endl;
+}
 int main()
 {
 	SmartPointer<people> TomPtr(new people(173));
+	SmartPointer<people> StuPtr(new student);
 
 	TomPtr->output();
 
+	StuPtr->output();
 
 /*
 	SmartPointer<int> iPtr(new int);
